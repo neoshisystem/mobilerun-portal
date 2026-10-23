@@ -1,5 +1,5 @@
-import android.os.Build
 package com.mobilerun.portal.service
+import android.os.Build
 
 import android.app.Activity
 import android.content.Context
