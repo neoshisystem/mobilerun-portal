@@ -379,7 +379,12 @@ class MediaProjectionScreenshotter private constructor(context: Context) {
         else Bitmap.createBitmap(raw, 0, 0, targetWidth, targetHeight)
 
         val bos = ByteArrayOutputStream()
-        val ok = cropped.compress(Bitmap.CompressFormat.PNG, 100, bos)
+        val compressFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Bitmap.CompressFormat.WEBP_LOSSY
+        } else {
+            Bitmap.CompressFormat.JPEG
+        }
+        val ok = cropped.compress(compressFormat, 80, bos)
         if (cropped !== raw) raw.recycle()
         cropped.recycle()
 

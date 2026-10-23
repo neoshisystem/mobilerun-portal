@@ -39,17 +39,22 @@ internal object AccessibilityScreenshotApi30 {
                             }
 
                             val output = ByteArrayOutputStream()
+                            val compressFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                Bitmap.CompressFormat.WEBP_LOSSY
+                            } else {
+                                Bitmap.CompressFormat.JPEG
+                            }
                             val compressed = bitmap.compress(
-                                Bitmap.CompressFormat.PNG,
-                                100,
+                                compressFormat,
+                                80,
                                 output,
                             )
                             if (!compressed) {
-                                Log.e(tag, "Failed to compress bitmap to PNG")
+                                Log.e(tag, "Failed to compress bitmap")
                                 bitmap.recycle()
                                 screenshotResult.hardwareBuffer.close()
                                 output.close()
-                                onFailure("Failed to compress screenshot to PNG format")
+                                onFailure("Failed to compress screenshot data")
                                 return
                             }
 
